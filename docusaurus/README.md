@@ -27,5 +27,5 @@ This command generates static content into the `build` directory and can be serv
 ## Copying Files
 
 ```bash
-mv ./build ../docs -f
+cp -rf ./build/* ../docs/
 ```
