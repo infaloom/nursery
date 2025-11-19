@@ -23,3 +23,10 @@ cephClusterSpec:
   dashboard:
     enabled: true
     ssl: false
+
+  resources:
+     osd:
+       limits:
+         memory: 2Gi
+       requests:
+         memory: 1Gi

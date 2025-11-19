@@ -37,7 +37,16 @@ because of certain dashboards that are too large.
 kubectl apply --server-side=true -f k8s/kube-prometheus-stack/dashboards/
 ```
 
-Setup ingress
+## Access Grafana
+
+Setup Grafana ingress
 ```bash
 envsubst < k8s/kube-prometheus-stack/grafana-ingress.yaml | kubectl apply --wait -f -
+```
+
+Run these commands to see the Grafana admin credentials and default URL.
+```bash
+echo "Grafana URL: https://grafana.${CLUSTER_DOMAIN}/"
+echo "Grafana Admin Username: admin"
+echo "Grafana Admin Password: $(kubectl get secret grafana-admin-credentials -n kube-prometheus-stack -o jsonpath="{.data.admin-password}" | base64 --decode)"
 ```

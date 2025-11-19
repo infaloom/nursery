@@ -13,6 +13,11 @@ kubectl exec -ti openbao-0 -n openbao -- bao kv put -mount=kv redis-password \
 redis-password=$(openssl rand -base64 32)
 ```
 
+Create namespace
+```bash
+kubectl create namespace redis-sentinel
+```
+
 Apply external secret to fetch the password
 ```bash
 kubectl apply -f k8s/redis-sentinel/redis-password-external-secret.yaml
@@ -30,3 +35,7 @@ helm upgrade --install redis-sentinel bitnami/redis \
 --namespace redis-sentinel --create-namespace \
 --values k8s/redis-sentinel/values.yaml
 ```
+
+:::info
+Read the output of the helm install command carefully. It contains instructions on how to connect to the redis sentinel cluster.        
+:::

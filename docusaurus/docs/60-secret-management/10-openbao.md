@@ -66,15 +66,27 @@ kubectl exec -ti openbao-0 -n openbao -- bao login # Then use the root token
 kubectl exec -ti openbao-0 -n openbao -- bao operator raft list-peers
 kubectl exec -ti openbao-0 -n openbao -- bao operator raft autopilot state
 ```
-### OpenBao UI
-It is recommended to use port-forwarding to access OpenBao from outside the cluster. Don't create ingress for OpenBao in production environments.
-```bash
-kubectl port-forward svc/openbao -n openbao 8200:8200
-```
 
 ### Enable KV secrets engine
 ```bash
 kubectl exec -ti openbao-0 -n openbao -- bao secrets enable -version=2 kv
 ```
 
-Then access OpenBao UI at http://localhost:8200
+### OpenBao UI
+
+Run these commands to access OpenBao UI initial root token and port-forwarding:
+
+```bash
+echo "OpenBao UI URL: http://localhost:8200"
+echo "Initial Root Token: $(pulumi --cwd $PULUMI_CWD config get openbao:initialRootToken)"
+kubectl port-forward -n openbao svc/openbao 8200:8200
+```
+
+:::note
+WSL2 users may need to create .wslconfig file in their Windows user profile folder (`C:\Users\<YourUserName>\.wslconfig`) with the following content to enable localhost port forwarding:
+
+```ini
+[wsl2]
+localhostForwarding=true
+```
+:::
