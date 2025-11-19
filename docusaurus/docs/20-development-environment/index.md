@@ -76,9 +76,20 @@ Install Ansible with pip:
 pip install ansible==12.2.0
 ```
 
-## kubectl
+## Kubectl
 
 https://kubernetes.io/docs/tasks/tools/install-kubectl/
 ```bash
 sudo snap install kubectl --channel=1.32/stable --classic
+```
+
+## Helm
+
+https://helm.sh/docs/intro/install
+```bash
+sudo apt-get install curl gpg apt-transport-https -y
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm=3.19.2-1 -y
 ```

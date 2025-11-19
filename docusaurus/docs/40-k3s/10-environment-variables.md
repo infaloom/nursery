@@ -12,15 +12,10 @@ pulumi --cwd $PULUMI_CWD config set --secret cluster:domain {REPLACE_WITH_YOUR_D
 ```
 
 :::important
-Cluster domain is the domain you will use to access services like Harbor, Grafana, etc. Ensure that this domain is properly configured in your DNS to point to the load balancer's IP address.
+Cluster domain is the domain you will use to access services like Harbor, Grafana, etc. In the later steps we will create wildcard DNS records pointing to the load balancer IP.
 
-For example, if your cluster domain is `infrastructure.example.com`, you should create DNS record for:
+For example, if your cluster domain is `infrastructure.example.com`, you will create DNS record for:
 - `*.infrastructure.example.com` -> Load Balancer IP
-
-Run the following for instructions to point your DNS to the load balancer IP
-```bash
-echo "Point your *.${CLUSTER_DOMAIN} DNS record to $(pulumi --cwd $PULUMI_CWD stack output clusterLoadBalancer.Ipv4Address) IP address"
-```
 :::
 
 ## Export necessary environment variables
