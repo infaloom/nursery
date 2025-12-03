@@ -4,7 +4,7 @@ title: Initial Release
 authors: [jzaric]
 ---
 
-Today we are open-sourcing **Infastructure**, the opinionated blueprint we use to run Infaloom's production workloads on a lean budget.
+Today we are open-sourcing **Nursery**, the opinionated blueprint we use to run Infaloom's production workloads on a lean budget.
 
 <!-- truncate -->
 
@@ -20,7 +20,7 @@ The project documents everything we've learned while standing up a six-node [K3s
 
 ## Why it matters
 
-Managed Kubernetes is fantastic, but it quickly eats into the budget of bootstrapped startups. Infastructure shows that you can own the stack end-to-end, keep costs predictable, and still follow best practices for backups, observability, and multi-environment automation.
+Managed Kubernetes is fantastic, but it quickly eats into the budget of bootstrapped startups. Nursery shows that you can own the stack end-to-end, keep costs predictable, and still follow best practices for backups, observability, and multi-environment automation.
 
 ## Dive in
 

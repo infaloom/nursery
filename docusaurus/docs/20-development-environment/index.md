@@ -14,12 +14,12 @@ Follow the instructions on https://learn.microsoft.com/en-us/windows/wsl/install
 
 Install Ubuntu 24.04 distro.
 ```powershell
-wsl --install Ubuntu-24.04 --name infastructure
+wsl --install Ubuntu-24.04 --name nursery
 ```
 
 For later use you can run it with:
 ```powershell
-wsl -d infastructure
+wsl -d nursery
 ```
 
 ## Update list of packages

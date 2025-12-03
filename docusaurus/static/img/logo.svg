@@ -8,12 +8,18 @@
       .block-light { fill: #5d6d7e; }
     </style>
   </defs>
-  <title>Infalloom Open Infrastructure - Building Blocks</title>
+  <title>Infaloom Nursery</title>
   <g transform="matrix(0.885329, 0, 0, 0.885329, 5.300222, 8.178664)" style="">
-    <rect class="block-main" x="10" y="0" width="80" height="20"/>
-    <rect class="block-secondary" x="50" y="0" width="40" height="20"/>
-    <rect class="block-light" x="35" y="20" width="30" height="25"/>
-    <rect class="block-accent" x="35" y="45" width="30" height="30"/>
-    <rect class="block-main" x="10" y="75" width="80" height="20"/>
+    <!-- Left Vertical Leg -->
+    <rect class="block-main" x="10" y="10" width="20" height="80"/>
+    
+    <!-- Diagonal Step 1 (Top-Mid) -->
+    <rect class="block-light" x="30" y="10" width="20" height="45"/>
+    
+    <!-- Diagonal Step 2 (Bot-Mid - Accent Color) -->
+    <rect class="block-accent" x="50" y="45" width="20" height="45"/>
+    
+    <!-- Right Vertical Leg -->
+    <rect class="block-secondary" x="70" y="10" width="20" height="80"/>
   </g>
 </svg>

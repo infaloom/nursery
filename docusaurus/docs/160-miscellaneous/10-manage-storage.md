@@ -143,7 +143,7 @@ int numberOfVolumesPerAgent = 2;
 
 Update the infrastructure
 ```bash
-# Preview infastructure changes
+# Preview changes
 pulumi preview
 # Apply updates
 pulumi up

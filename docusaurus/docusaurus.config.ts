@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: "Infastructure",
+  title: "Nursery",
   tagline: "Infrastructure made easy",
   favicon: "img/favicon.ico",
 
@@ -18,7 +18,7 @@ const config: Config = {
   url: "https://infaloom.github.io/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/infastructure/",
+  baseUrl: "/nursery/",
 
   // [WARNING] When deploying to GitHub Pages, it is better to use an explicit "trailingSlash" site config.
   // Otherwise, GitHub Pages will add an extra trailing slash to your site urls only on direct-access (not when navigation) with a server redirect.
@@ -28,7 +28,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "infaloom", // Usually your GitHub org/user name.
-  projectName: "infastructure", // Usually your repo name.
+  projectName: "nursery", // Usually your repo name.
 
   onBrokenLinks: "throw",
 
@@ -50,7 +50,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/infaloom/infastructure/tree/main/docusaurus/",
+            "https://github.com/infaloom/nursery/tree/main/docusaurus/",
         },
         blog: {
           showReadingTime: true,
@@ -61,7 +61,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/infaloom/infastructure/tree/main/docusaurus/",
+            "https://github.com/infaloom/nursery/tree/main/docusaurus/",
           // Useful options to enforce blogging best practices
           onInlineTags: "warn",
           onInlineAuthors: "warn",
@@ -81,9 +81,9 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: "Infastructure",
+      title: "Nursery",
       logo: {
-        alt: "Infastructure Logo",
+        alt: "Nursery Logo",
         src: "img/logo.svg",
       },
       items: [
@@ -100,7 +100,7 @@ const config: Config = {
           position: "right",
         },
         {
-          href: "https://github.com/infaloom/infastructure",
+          href: "https://github.com/infaloom/nursery",
           label: "GitHub",
           position: "right",
         },
