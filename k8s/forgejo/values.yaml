@@ -1,0 +1,86 @@
+gitea:
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+  config:
+    "ssh.minimum_key_sizes": # must put in quotes to avoid converting underscores to dashes
+      RSA: 2048
+    service:
+      DISABLE_REGISTRATION: true
+      DEFAULT_USER_VISIBILITY: private
+      DEFAULT_ORG_VISIBILITY: private
+    repository:
+      DEFAULT_PRIVATE: private
+    "service.explore":
+      REQUIRE_SIGNIN_VIEW: true
+    oauth2_client:
+      ENABLE_AUTO_REGISTRATION: true
+      ACCOUNT_LINKING: auto
+      USERNAME: preferred_username
+    actions:
+      ENABLED: false
+
+    storage:
+      STORAGE_TYPE: minio
+      MINIO_ENDPOINT: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
+      #MINIO_LOCATION: us-east-1
+      #MINIO_ACCESS_KEY_ID: <access key>
+      #MINIO_SECRET_ACCESS_KEY: <secret key>
+      MINIO_BUCKET: forgejo
+      MINIO_USE_SSL: false
+      MINIO_BUCKET_LOOKUP: path
+
+    queue:
+      TYPE: redis
+    cache:
+      ADAPTER: redis
+    session:
+      PROVIDER: redis
+
+    webhook:
+      ALLOWED_HOST_LIST: external,woodpecker.${CLUSTER_DOMAIN}
+
+  additionalConfigFromEnvs:
+    - name: FORGEJO__STORAGE__MINIO_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: forgejo-bucket-claim
+          key: AWS_ACCESS_KEY_ID
+    - name: FORGEJO__STORAGE__MINIO_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: forgejo-bucket-claim
+          key: AWS_SECRET_ACCESS_KEY
+
+  additionalConfigSources:
+    - secret:
+        secretName: forgejo-app-ini
+
+strategy:
+  type: Recreate
+
+service:
+  ssh:
+    type: LoadBalancer
+    port: 32222
+    externalTrafficPolicy: Local
+ingress:
+  enabled: true
+  className: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-middleware-redirect-https@kubernetescrd,kube-system-traefik-middleware-hq-ipallowlist@kubernetescrd
+  hosts:
+    - host: forgejo.${CLUSTER_DOMAIN}
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - forgejo.${CLUSTER_DOMAIN}
+      secretName: forgejo.${CLUSTER_DOMAIN}-tls

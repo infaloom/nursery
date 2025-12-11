@@ -1,0 +1,11 @@
+
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: forgejo-database
+  namespace: cnpg-system
+spec:
+  name: forgejo
+  owner: forgejo
+  cluster:
+    name: cnpg-cluster

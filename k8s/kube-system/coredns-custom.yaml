@@ -13,3 +13,30 @@ data:
         fallthrough
       }
     }
+
+    account.${CLUSTER_DOMAIN}:53 {
+      errors
+      cache 30
+      hosts {
+        10.0.1.1 account.${CLUSTER_DOMAIN}
+        fallthrough
+      }
+    }
+
+    forgejo.${CLUSTER_DOMAIN}:53 {
+      errors
+      cache 30
+      hosts {
+        10.0.1.1 forgejo.${CLUSTER_DOMAIN}
+        fallthrough
+      }
+    }
+
+    woodpecker.${CLUSTER_DOMAIN}:53 {
+      errors
+      cache 30
+      hosts {
+        10.0.1.1 woodpecker.${CLUSTER_DOMAIN}
+        fallthrough
+      }
+    }

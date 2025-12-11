@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import json
 import yaml # Requires PyYAML: pip install pyyaml
 from collections import defaultdict

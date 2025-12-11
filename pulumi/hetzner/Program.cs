@@ -144,6 +144,15 @@ return await Deployment.RunAsync(() =>
         Proxyprotocol = true
     });
 
+    var loadBalancerServiceForgejoSsh = new HCloud.LoadBalancerService("loadBalancerServiceForgejoSsh", new()
+    {
+        LoadBalancerId = clusterLoadBalancer.Id,
+        Protocol = "tcp",
+        ListenPort = 22,
+        DestinationPort = 32222,
+        Proxyprotocol = true
+    });
+
     var loadBalancerNetwork = new HCloud.LoadBalancerNetwork("loadBalancerNetwork", new()
     {
         LoadBalancerId = clusterLoadBalancer.Id.Apply(int.Parse),

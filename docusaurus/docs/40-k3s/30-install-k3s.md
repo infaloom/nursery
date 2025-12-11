@@ -41,5 +41,5 @@ ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/103_k3s_add_age
 This is required for accessing harbor from within the cluster. Ensure that the `CLUSTER_DOMAIN` environment variable is set before running the playbook.
 
 ```bash
-ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/104_add_harbor_to_hosts.yaml
+ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/104_add_internal_services_to_hosts.yaml
 ```

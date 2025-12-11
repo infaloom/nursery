@@ -1,0 +1,63 @@
+---
+- name: Add harbor host to /etc/hosts
+  hosts: servers, agents
+  become: true                  # Execute tasks with root privileges (e.g., using sudo)
+  gather_facts: false             # Optional: Skip gathering facts if not needed for faster execution
+
+  tasks:
+    - name: Ensure harbor internal pointer is in cloud-init template
+      environment:
+        CLUSTER_DOMAIN: "{{ lookup('ansible.builtin.env', 'CLUSTER_DOMAIN') }}"
+      ansible.builtin.lineinfile:
+        path: /etc/cloud/templates/hosts.debian.tmpl
+        line: "10.0.1.1 harbor.$CLUSTER_DOMAIN" # Load balancer internal IP
+        state: present
+    - name: Ensure harbor internal pointer is present in /etc/hosts
+      environment:
+        CLUSTER_DOMAIN: "{{ lookup('ansible.builtin.env', 'CLUSTER_DOMAIN') }}"
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: "10.0.1.1 harbor.$CLUSTER_DOMAIN" # Load balancer internal IP
+        state: present
+    - name: Ensure account internal pointer is in cloud-init template
+      environment:
+        CLUSTER_DOMAIN: "{{ lookup('ansible.builtin.env', 'CLUSTER_DOMAIN') }}"
+      ansible.builtin.lineinfile:
+        path: /etc/cloud/templates/hosts.debian.tmpl
+        line: "10.0.1.1 account.$CLUSTER_DOMAIN" # Load balancer internal IP
+        state: present
+    - name: Ensure account internal pointer is present in /etc/hosts
+      environment:
+        CLUSTER_DOMAIN: "{{ lookup('ansible.builtin.env', 'CLUSTER_DOMAIN') }}"
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: "10.0.1.1 account.$CLUSTER_DOMAIN" # Load balancer internal IP
+        state: present
+    - name: Ensure forgejo internal pointer is in cloud-init template
+      environment:
+        CLUSTER_DOMAIN: "{{ lookup('ansible.builtin.env', 'CLUSTER_DOMAIN') }}"
+      ansible.builtin.lineinfile:
+        path: /etc/cloud/templates/hosts.debian.tmpl
+        line: "10.0.1.1 forgejo.$CLUSTER_DOMAIN" # Load balancer internal IP
+        state: present
+    - name: Ensure forgejo internal pointer is present in /etc/hosts
+      environment:
+        CLUSTER_DOMAIN: "{{ lookup('ansible.builtin.env', 'CLUSTER_DOMAIN') }}"
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: "10.0.1.1 forgejo.$CLUSTER_DOMAIN" # Load balancer internal IP
+        state: present
+    - name: Ensure woodpecker internal pointer is in cloud-init template
+      environment:
+        CLUSTER_DOMAIN: "{{ lookup('ansible.builtin.env', 'CLUSTER_DOMAIN') }}"
+      ansible.builtin.lineinfile:
+        path: /etc/cloud/templates/hosts.debian.tmpl
+        line: "10.0.1.1 woodpecker.$CLUSTER_DOMAIN" # Load balancer internal IP
+        state: present
+    - name: Ensure woodpecker internal pointer is present in /etc/hosts
+      environment:
+        CLUSTER_DOMAIN: "{{ lookup('ansible.builtin.env', 'CLUSTER_DOMAIN') }}"
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: "10.0.1.1 woodpecker.$CLUSTER_DOMAIN" # Load balancer internal IP
+        state: present

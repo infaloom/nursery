@@ -1,0 +1,41 @@
+server:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-middleware-redirect-https@kubernetescrd,kube-system-traefik-middleware-hq-ipallowlist@kubernetescrd
+    hosts:
+      - host: woodpecker.${CLUSTER_DOMAIN}
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - woodpecker.${CLUSTER_DOMAIN}
+        secretName: woodpecker.${CLUSTER_DOMAIN}-tls
+
+  env:
+    WOODPECKER_OPEN: false
+    WOODPECKER_ADMIN: "" # comma separated list of admin users
+    WOODPECKER_HOST: "https://woodpecker.${CLUSTER_DOMAIN}"
+  extraSecretNamesForEnvFrom:
+    - woodpecker-server-env
+
+agent:
+  persistence:
+    storageClass: local-path
+  env:
+    WOODPECKER_BACKEND_K8S_STORAGE_CLASS: local-path
+    WOODPECKER_BACKEND_K8S_STORAGE_RWX: false
+
+metrics:
+  enabled: true
+  port: 9001
+
+prometheus:
+  podmonitor:
+    enabled: true
+    interval: 60s
+    labels: {}

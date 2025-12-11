@@ -43,3 +43,17 @@ cluster:
     enabled: true
     podMonitor:
       enabled: true
+
+  roles:
+    - name: forgejo
+      ensure: present
+      login: true
+      superuser: false
+      passwordSecret:
+        name: forgejo-db-credentials
+    - name: keycloak
+      ensure: present
+      login: true
+      superuser: false
+      passwordSecret:
+        name: keycloak-db-credentials
