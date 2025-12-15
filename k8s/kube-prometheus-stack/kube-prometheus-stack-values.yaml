@@ -10,7 +10,7 @@ grafana:
   admin:
     existingSecret: grafana-admin-credentials
   additionalDataSources:
-  - name: Loki Fluentbit
+  - name: Loki Fluent Bit
     type: loki
     isDefault: false
     access: proxy
