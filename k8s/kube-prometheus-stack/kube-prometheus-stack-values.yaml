@@ -9,6 +9,42 @@
 grafana:
   admin:
     existingSecret: grafana-admin-credentials
+  assertNoLeakedSecrets: false
+  deploymentStrategy:
+    type: Recreate
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClassName: ceph-block
+  grafana.ini:
+    server:
+      root_url: https://grafana.${CLUSTER_DOMAIN}
+    auth:
+      disable_login_form: false # Enable login form for kiosk mode
+    auth.generic_oauth:
+      enabled: true
+      name: Keycloak
+      allow_sign_up: true
+      client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
+      client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
+      scopes: openid
+      email_attribute_path: email
+      login_attribute_path: preferred_username
+      name_attribute_path: name
+      auth_url: https://account.${CLUSTER_DOMAIN}/realms/nursery/protocol/openid-connect/auth
+      token_url: https://account.${CLUSTER_DOMAIN}/realms/nursery/protocol/openid-connect/token
+      api_url: https://account.${CLUSTER_DOMAIN}/realms/nursery/protocol/openid-connect/userinfo
+      role_attribute_path: contains(groups[*], '/Admins') && 'GrafanaAdmin' || 'None'
+      allow_assign_grafana_admin: true
+      role_attribute_strict: true
+      org_attribute_path: groups
+      org_mapping: /Admins:*:Admin
+  extraSecretMounts:
+    - name: keycloak-grafana-client-credentials-mount
+      secretName: keycloak-grafana-client-credentials
+      defaultMode: 0440
+      mountPath: /etc/secrets/auth_generic_oauth
+      readOnly: true
   additionalDataSources:
   - name: Loki Fluent Bit
     type: loki

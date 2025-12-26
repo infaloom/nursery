@@ -8,3 +8,77 @@ config:
         match                  *
         auto_kubernetes_labels on
         tenant_id              fluent-bit
+  filters: |
+    [FILTER]
+        Name kubernetes
+        Match kube.*
+        Merge_Log On
+        Keep_Log Off
+        K8S-Logging.Parser On
+        K8S-Logging.Exclude On
+
+    [FILTER]
+        Name    lua
+        Match   kube.*
+        script  /fluent-bit/scripts/serilog_filter.lua
+        call    process_serilog
+  customParsers: |
+    [PARSER]
+        Name                   serilog-formatting-compact
+        Format                 json
+        Time_Key               @t
+        Time_Format            %Y-%m-%dT%H:%M:%S.%L%z
+        Time_Strict            true
+        Time_Keep              true # Keep the original time field for serilog filter
+        # Optional: If the log level is present as a short string, map it
+        Types                  @l:string @m:string @x:string
+luaScripts:
+  serilog_filter.lua: |
+    -- Lua filter for serilog-formatting-compact parsed logs
+    -- Only processes records that have serilog-specific fields (@t, @m, @l)
+    function process_serilog(tag, timestamp, record)
+        -- Check if this is a serilog-formatted log (has @t or @m fields)
+        if record["@t"] == nil and record["@m"] == nil then
+            -- Not a serilog log, pass through unchanged
+            return 0, timestamp, record
+        end
+
+        -- Remove @t
+        record["@t"] = nil
+
+        -- Example: Map serilog fields to standard field names
+        if record["@m"] then
+            record["message"] = record["@m"]
+            record["@m"] = nil  -- Optionally remove the original field
+        end
+
+        if record["@l"] then
+            -- Map serilog log level to loki level
+            local level_map = {
+              ["Verbose"] = "trace",
+              ["Debug"] = "debug",
+              ["Information"] = "info",
+              ["Warning"] = "warn",
+              ["Error"] = "error",
+              ["Fatal"] = "critical"
+            }
+            if level_map[record["@l"]] then
+              record["level"] = level_map[record["@l"]]
+            else
+              record["level"] = "unknown"
+            end
+
+            record["@l"] = nil  -- Optionally remove the original field
+        else
+            record["level"] = "info"  -- Default level if not present
+        end
+
+
+        if record["@x"] then
+            record["exception"] = record["@x"]
+            record["@x"] = nil  -- Optionally remove the original field
+        end
+
+        -- Return modified record (1 = modified, 0 = unchanged, -1 = drop)
+        return 1, timestamp, record
+    end
