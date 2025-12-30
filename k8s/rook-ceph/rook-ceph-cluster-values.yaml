@@ -7,7 +7,7 @@ monitoring:
   # -- Enable Prometheus integration, will also create necessary RBAC rules to allow Operator to create ServiceMonitors.
   # Monitoring requires Prometheus to be pre-installed
   enabled: true
-                
+
 # All values below are taken from the CephCluster CRD
 # -- Cluster configuration.
 # @default -- See [below](#ceph-cluster-spec)
@@ -16,17 +16,24 @@ cephClusterSpec:
     all:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
+          nodeSelectorTerms:
             - matchExpressions:
                 - key: node-role.kubernetes.io/control-plane
                   operator: DoesNotExist
+
+  mgr:
+    modules:
+      - name: rook
+        enabled: true
+
   dashboard:
     enabled: true
-    ssl: false
+    port: 8443
+    ssl: true
 
   resources:
-     osd:
-       limits:
-         memory: 2Gi
-       requests:
-         memory: 1Gi
+    osd:
+      limits:
+        memory: 2Gi
+      requests:
+        memory: 1Gi

@@ -40,7 +40,6 @@ This guide assumes that you have a static IP or a VPN providing a static IP. If 
 As mentioned, this stack is designed for small teams with internal DevOps expertise. If you have a larger team, you may want to consider more advanced security measures, such as:
 
 - Role-based access control (RBAC)
-- Network policies
 - Audit logging
 - etc.
 
