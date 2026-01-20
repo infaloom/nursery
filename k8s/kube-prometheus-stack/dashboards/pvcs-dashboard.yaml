@@ -1,0 +1,464 @@
+﻿apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    grafana_dashboard: "1"
+  name: pvcs-dashboard
+  namespace: kube-prometheus-stack
+data:
+  pvcs-dashboard.json: |
+    {
+        "__elements": {},
+        "__requires": [
+            {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "12.0.3"
+            },
+            {
+            "type": "datasource",
+            "id": "prometheus",
+            "name": "Prometheus",
+            "version": "1.0.0"
+            },
+            {
+            "type": "panel",
+            "id": "table",
+            "name": "Table",
+            "version": ""
+            }
+        ],
+        "annotations": {
+            "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                "type": "datasource",
+                "uid": "grafana"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "target": {
+                "limit": 100,
+                "matchAny": false,
+                "tags": [],
+                "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+            ]
+        },
+        "description": "Capacity and Usage of PVC",
+        "editable": true,
+        "fiscalYearStartMonth": 0,
+        "graphTooltip": 0,
+        "id": null,
+        "links": [],
+        "panels": [
+            {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+            },
+            "description": "Only available for OCP 3.8+ and for non NFS volumes",
+            "fieldConfig": {
+                "defaults": {
+                "color": {
+                    "mode": "thresholds"
+                },
+                "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                    "type": "auto"
+                    },
+                    "filterable": false,
+                    "inspect": false
+                },
+                "decimals": 1,
+                "displayName": "",
+                "mappings": [],
+                "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                    {
+                        "color": "rgba(50, 172, 45, 0.97)"
+                    },
+                    {
+                        "color": "rgba(237, 129, 40, 0.89)",
+                        "value": 0.7
+                    },
+                    {
+                        "color": "rgba(245, 54, 54, 0.9)",
+                        "value": 0.9
+                    }
+                    ]
+                },
+                "unit": "bytes"
+                },
+                "overrides": [
+                {
+                    "matcher": {
+                    "id": "byName",
+                    "options": "% Storage Usage"
+                    },
+                    "properties": [
+                    {
+                        "id": "unit",
+                        "value": "percentunit"
+                    },
+                    {
+                        "id": "custom.cellOptions",
+                        "value": {
+                        "type": "color-background"
+                        }
+                    }
+                    ]
+                },
+                {
+                    "matcher": {
+                    "id": "byName",
+                    "options": "PVC"
+                    },
+                    "properties": [
+                    {
+                        "id": "custom.width",
+                        "value": 573
+                    }
+                    ]
+                },
+                {
+                    "matcher": {
+                    "id": "byName",
+                    "options": "Inode Used"
+                    },
+                    "properties": [
+                    {
+                        "id": "unit",
+                        "value": "short"
+                    }
+                    ]
+                },
+                {
+                    "matcher": {
+                    "id": "byName",
+                    "options": "% Inode Usage"
+                    },
+                    "properties": [
+                    {
+                        "id": "unit",
+                        "value": "percentunit"
+                    },
+                    {
+                        "id": "custom.cellOptions",
+                        "value": {
+                        "type": "color-background"
+                        }
+                    }
+                    ]
+                },
+                {
+                    "matcher": {
+                    "id": "byName",
+                    "options": "Access Mode"
+                    },
+                    "properties": [
+                    {
+                        "id": "custom.width",
+                        "value": 147
+                    }
+                    ]
+                }
+                ]
+            },
+            "gridPos": {
+                "h": 19,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 6,
+            "options": {
+                "cellHeight": "lg",
+                "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                    "sum"
+                ],
+                "show": false
+                },
+                "showHeader": true,
+                "sortBy": [
+                {
+                    "desc": true,
+                    "displayName": "% Storage Usage"
+                }
+                ]
+            },
+            "pluginVersion": "12.0.3",
+            "targets": [
+                {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "max by (persistentvolumeclaim,topology_kubernetes_io_zone)(kubelet_volume_stats_capacity_bytes{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"})",
+                "format": "table",
+                "instant": true,
+                "intervalFactor": 1,
+                "legendFormat": "",
+                "refId": "A"
+                },
+                {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "max by (persistentvolumeclaim)(kubelet_volume_stats_used_bytes{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"})",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "intervalFactor": 1,
+                "legendFormat": "",
+                "refId": "B"
+                },
+                {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "max by (persistentvolumeclaim)(kubelet_volume_stats_used_bytes{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"}/kubelet_volume_stats_capacity_bytes{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"})",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "intervalFactor": 1,
+                "legendFormat": "",
+                "refId": "C"
+                },
+                {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "max by (persistentvolumeclaim)(kubelet_volume_stats_inodes_used{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"}/kubelet_volume_stats_inodes{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"})",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "intervalFactor": 1,
+                "legendFormat": "",
+                "refId": "D"
+                },
+                {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "max by (persistentvolumeclaim)(kubelet_volume_stats_inodes_used{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"})",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "intervalFactor": 1,
+                "legendFormat": "",
+                "refId": "E"
+                },
+                {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "max by (persistentvolumeclaim,access_mode)(kube_persistentvolumeclaim_access_mode{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"})",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "intervalFactor": 1,
+                "legendFormat": "",
+                "refId": "F"
+                },
+                {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "max by (persistentvolumeclaim,storageclass)(kube_persistentvolumeclaim_info{namespace=~\"$ns\",persistentvolumeclaim=~\"$PVC\"})",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "intervalFactor": 1,
+                "legendFormat": "",
+                "refId": "G"
+                }
+            ],
+            "transformations": [
+                {
+                "id": "merge",
+                "options": {
+                    "reducers": []
+                }
+                },
+                {
+                "id": "organize",
+                "options": {
+                    "excludeByName": {
+                    "Time": true,
+                    "Value #F": true,
+                    "Value #G": true,
+                    "__name__": true,
+                    "arch": true,
+                    "beta_kubernetes_io_arch": true,
+                    "beta_kubernetes_io_instance_type": true,
+                    "beta_kubernetes_io_os": true,
+                    "failure_domain_beta_kubernetes_io_region": true,
+                    "failure_domain_beta_kubernetes_io_zone": true,
+                    "instance": true,
+                    "job": true,
+                    "k8s_io_cloud_provider_aws": true,
+                    "karpenter_k8s_aws_instance_category": true,
+                    "karpenter_k8s_aws_instance_cpu": true,
+                    "karpenter_k8s_aws_instance_cpu_manufacturer": true,
+                    "karpenter_k8s_aws_instance_ebs_bandwidth": true,
+                    "karpenter_k8s_aws_instance_encryption_in_transit_supported": true,
+                    "karpenter_k8s_aws_instance_family": true,
+                    "karpenter_k8s_aws_instance_generation": true,
+                    "karpenter_k8s_aws_instance_hypervisor": true,
+                    "karpenter_k8s_aws_instance_local_nvme": true,
+                    "karpenter_k8s_aws_instance_memory": true,
+                    "karpenter_k8s_aws_instance_network_bandwidth": true,
+                    "karpenter_k8s_aws_instance_size": true,
+                    "karpenter_sh_capacity_type": true,
+                    "karpenter_sh_initialized": true,
+                    "karpenter_sh_nodepool": true,
+                    "karpenter_sh_registered": true,
+                    "kubernetes_io_arch": true,
+                    "kubernetes_io_hostname": true,
+                    "kubernetes_io_os": true,
+                    "namespace": true,
+                    "nginxnode": true,
+                    "node_kubernetes_io_instance_type": true,
+                    "nodetype": true,
+                    "persistentvolumeclaim": false,
+                    "role": true,
+                    "topology_ebs_csi_aws_com_zone": true,
+                    "topology_k8s_aws_zone_id": true,
+                    "topology_kubernetes_io_region": true
+                    },
+                    "includeByName": {},
+                    "indexByName": {
+                    "Time": 9,
+                    "Value #A": 7,
+                    "Value #B": 6,
+                    "Value #C": 8,
+                    "Value #D": 5,
+                    "Value #E": 4,
+                    "Value #F": 10,
+                    "access_mode": 3,
+                    "persistentvolumeclaim": 0,
+                    "storageclass": 1,
+                    "topology_kubernetes_io_zone": 2
+                    },
+                    "renameByName": {
+                    "Value": "Size",
+                    "Value #A": "Storage Size",
+                    "Value #B": "Storage Used",
+                    "Value #C": "% Storage Usage",
+                    "Value #D": "% Inode Usage",
+                    "Value #E": "Inode Used",
+                    "access_mode": "Access Mode",
+                    "persistentvolumeclaim": "PVC",
+                    "storageclass": "Storage Class",
+                    "topology_kubernetes_io_region": "",
+                    "topology_kubernetes_io_zone": "Zone"
+                    }
+                }
+                }
+            ],
+            "type": "table"
+            }
+        ],
+        "refresh": "",
+        "schemaVersion": 41,
+        "tags": [
+            "PVC"
+        ],
+        "templating": {
+            "list": [
+            {
+                "current": {},
+                "hide": 0,
+                "includeAll": false,
+                "label": "Datasource",
+                "multi": false,
+                "name": "datasource",
+                "options": [],
+                "query": "prometheus",
+                "queryValue": "",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "type": "datasource"
+            },
+            {
+                "current": {},
+                "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+                },
+                "definition": "label_values(kubelet_volume_stats_available_bytes,namespace)",
+                "includeAll": true,
+                "multi": true,
+                "name": "ns",
+                "options": [],
+                "query": {
+                "qryType": 1,
+                "query": "label_values(kubelet_volume_stats_available_bytes,namespace)",
+                "refId": "PrometheusVariableQueryEditor-VariableQuery"
+                },
+                "refresh": 1,
+                "regex": "",
+                "type": "query"
+            },
+            {
+                "current": {},
+                "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+                },
+                "definition": "label_values(kubelet_volume_stats_available_bytes{namespace=~\"$ns\"},persistentvolumeclaim)",
+                "includeAll": true,
+                "multi": true,
+                "name": "PVC",
+                "options": [],
+                "query": {
+                "qryType": 1,
+                "query": "label_values(kubelet_volume_stats_available_bytes{namespace=~\"$ns\"},persistentvolumeclaim)",
+                "refId": "PrometheusVariableQueryEditor-VariableQuery"
+                },
+                "refresh": 1,
+                "regex": "",
+                "type": "query"
+            }
+            ]
+        },
+        "time": {
+            "from": "now-5m",
+            "to": "now"
+        },
+        "timepicker": {
+            "hidden": true
+        },
+        "timezone": "",
+        "title": "PVC",
+        "uid": "fb62622c-b61a-4dfe-a8f6-11d74e645db0",
+        "version": 1,
+        "weekStart": "",
+        "gnetId": 24123
+    }
