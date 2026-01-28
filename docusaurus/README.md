@@ -29,3 +29,9 @@ This command generates static content into the `build` directory and can be serv
 ```bash
 cp -rf ./build/* ../docs/
 ```
+
+## Build and copy in one command
+
+```bash
+npm run bac
+```

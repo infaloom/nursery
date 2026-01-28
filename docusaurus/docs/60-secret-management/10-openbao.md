@@ -1,7 +1,7 @@
 # OpenBao
 
 :::danger
-The following setup may not be suitable for environments requiring the highest level of security, for example apps storing finance or healthcare data. For these environments you may want to use 3rd-party key management system.
+The following setup may not be suitable for environments requiring the highest level of security, for example apps storing finance or healthcare data. For these environments you may want to use 3rd-party key management system, end to end encryption, etc. Please evaluate your security requirements carefully.
 :::
 
 Details at https://openbao.org/docs/platform/k8s/helm/
@@ -74,19 +74,14 @@ kubectl exec -ti openbao-0 -n openbao -- bao secrets enable -version=2 kv
 
 ### OpenBao UI
 
-Run these commands to access OpenBao UI initial root token and port-forwarding:
+Create OpenBao UI ingress:
+```bash
+envsubst '$CLUSTER_DOMAIN' < k8s/openbao/openbao-ingress.yaml | kubectl apply -f -
+```
+
+Run these commands to access OpenBao UI with initial root token:
 
 ```bash
-echo "OpenBao UI URL: http://localhost:8200"
+echo "OpenBao UI URL: https://openbao.${CLUSTER_DOMAIN}"
 echo "Initial Root Token: $(pulumi --cwd $PULUMI_CWD config get openbao:initialRootToken)"
-kubectl port-forward -n openbao svc/openbao 8200:8200
 ```
-
-:::note
-WSL2 users may need to create .wslconfig file in their Windows user profile folder (`C:\Users\<YourUserName>\.wslconfig`) with the following content to enable localhost port forwarding:
-
-```ini
-[wsl2]
-localhostForwarding=true
-```
-:::

@@ -22,6 +22,15 @@ For later use you can run it with:
 wsl -d nursery
 ```
 
+:::info
+WSL2 users may need to create .wslconfig file in their Windows user profile folder (`C:\Users\<YourUserName>\.wslconfig`) with the following content to enable localhost port forwarding:
+
+```ini
+[wsl2]
+localhostForwarding=true
+```
+:::
+
 ## Update list of packages
 ```bash
 sudo apt update
