@@ -12,19 +12,31 @@ kubectl exec -ti openbao-0 -n openbao -- bao kv put -mount=kv harbor-admin-passw
     HARBOR_ADMIN_PASSWORD=$(openssl rand -base64 32)
 ```
 
+Create OpenBao secret with a random password for Harbor db user
+```bash
+kubectl exec -ti openbao-0 -n openbao -- bao kv put -mount=kv harbor-db-credentials \
+    username=harbor \
+    password=$(openssl rand -base64 32)
+```
+
 Create namespace
 ```bash
 kubectl create namespace harbor
 ```
 
-Create ExternalSecret to pull the password into k8s
+Create ExternalSecret to pull the admin password
 ```bash
 kubectl apply -f k8s/harbor/harbor-admin-password-external-secret.yaml
 ```
 
-Create ExternalSecret to pull the cnpg password
+Create ExternalSecret to pull the Harbor db credentials into harbor namespace
 ```bash
-kubectl apply -f k8s/harbor/harbor-cnpg-password-external-secret.yaml
+kubectl apply -f k8s/harbor/harbor-db-credentials-external-secret.yaml
+```
+
+Ensure you already have External Secret to pull the Harbor db credentials into cnpg-system namespace. This should have been created with the cnpg cluster.
+```bash
+kubectl apply -f k8s/cnpg-system/databases/harbor/harbor-db-credentials-external-secret.yaml
 ```
 
 ## Install
@@ -42,10 +54,14 @@ Harbor has issues with Redis Sentinel support at the time of writing.
 We are using the Harbor helm chart built-in redis instance.
 :::
 
-Create registry database in the PostgreSQL cluster
+:::info
+`harbor` role should have been created with the cnpg cluster.
+:::
+
+Create `harbor` database in the PostgreSQL cluster
 
 ```bash
-kubectl --namespace cnpg-system exec --stdin --tty services/cnpg-cluster-rw -- psql -c "CREATE DATABASE registry"
+kubectl apply -f k8s/cnpg-system/databases/harbor/harbor-database.yaml
 ```
 
 Add helm repo

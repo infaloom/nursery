@@ -81,6 +81,7 @@ database:
   type: external
   external:
     host: "cnpg-cluster-rw.cnpg-system.svc.cluster.local"
-    username: "postgres"
+    coreDatabase: "harbor"
+    username: "harbor"
     # if using existing secret, the key must be "password"
-    existingSecret: "harbor-cnpg-password"
+    existingSecret: "harbor-db-credentials"

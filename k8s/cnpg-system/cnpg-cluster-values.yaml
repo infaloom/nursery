@@ -57,3 +57,9 @@ cluster:
       superuser: false
       passwordSecret:
         name: keycloak-db-credentials
+    - name: harbor
+      ensure: present
+      login: true
+      superuser: false
+      passwordSecret:
+        name: harbor-db-credentials
