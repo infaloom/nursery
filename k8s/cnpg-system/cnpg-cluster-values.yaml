@@ -63,3 +63,5 @@ cluster:
       superuser: false
       passwordSecret:
         name: harbor-db-credentials
+    # START ENVIRONMENT SPECIFIC ROLES SECTION
+    # END ENVIRONMENT SPECIFIC ROLES SECTION
