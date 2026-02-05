@@ -33,6 +33,30 @@ Create external secret to read Keycloak OAuth credentials from OpenBao
 kubectl apply -f k8s/kube-prometheus-stack/keycloak-grafana-client-credentials-external-secret.yaml
 ```
 
+### Grafana SMTP credentials
+
+Create Grafana SMTP secret for email notifications. Replace values in the command with your SMTP credentials. In this example, we are using SendGrid.
+```bash
+kubectl exec -ti openbao-0 -n openbao -- bao kv put -mount=kv grafana-smtp-config smtp_host=smtp.sendgrid.net:587 smtp_user=apikey smtp_password=<SMTP_PASSWORD>
+```
+
+Create external secret to read Grafana SMTP credentials from OpenBao
+```bash
+kubectl apply -f k8s/kube-prometheus-stack/grafana-smtp-config-external-secret.yaml
+```
+
+## Alerting
+
+Export admin email:
+```bash
+export GRAFANA_ALERTING_EMAIL_RECEIVERS=<REPLACE_WITH_ACTUAL_EMAILS>
+```
+
+Create a ConfigMap for Grafana alerting contact points
+```bash
+envsubst '$GRAFANA_ALERTING_EMAIL_RECEIVERS' < k8s/kube-prometheus-stack/alerting/alerting-configmap.yaml | kubectl apply -f -
+```
+
 ## Install kube-prometheus-stack
 
 Add helm repositories

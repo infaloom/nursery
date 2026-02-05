@@ -39,11 +39,23 @@ grafana:
       role_attribute_strict: true
       org_attribute_path: groups
       org_mapping: /Admins:*:Admin
+    smtp:
+      enabled: true
+      host: $__file{/etc/secrets/smtp/smtp_host}
+      user: $__file{/etc/secrets/smtp/smtp_user}
+      password: $__file{/etc/secrets/smtp/smtp_password}
+      from_address: no-reply@grafana.${CLUSTER_DOMAIN}
+      from_name: Grafana @ ${CLUSTER_DOMAIN}
   extraSecretMounts:
     - name: keycloak-grafana-client-credentials-mount
       secretName: keycloak-grafana-client-credentials
       defaultMode: 0440
       mountPath: /etc/secrets/auth_generic_oauth
+      readOnly: true
+    - name: grafana-smtp-config-mount
+      secretName: grafana-smtp-config
+      defaultMode: 0440
+      mountPath: /etc/secrets/smtp
       readOnly: true
   additionalDataSources:
   - name: Loki Fluent Bit
@@ -55,3 +67,9 @@ grafana:
       httpHeaderName1: 'X-Scope-OrgID'
     secureJsonData:
       httpHeaderValue1: 'fluent-bit'
+  extraConfigmapMounts:
+  - name: alerting-configmap-mount
+    configMap: alerting-configmap
+    defaultMode: 0440
+    mountPath: /etc/grafana/provisioning/alerting
+    readOnly: true
