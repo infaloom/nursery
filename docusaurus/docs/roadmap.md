@@ -10,6 +10,7 @@
 - ~~Refactor docs to ensure services cnpg roles and dbs are created with the cnpg cluster and not each individually~~
 - ~~Document Forgejo SSO with Keycloak~~
 - Alert rules and notifications (Prometheus, Grafana, Alertmanager)
+- DB services access behind a firewall (without kubectl port-forward)
 - Look for alternatives to MinIO for remote backups (going closed source)
 - Add tutorials for configuring keycloak Nursery realm
 - Network policies
