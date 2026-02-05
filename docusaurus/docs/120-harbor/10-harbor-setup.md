@@ -6,22 +6,17 @@ Harbor is an open-source container image registry that secures images with role-
 
 ## Create external secrets
 
+Create namespace
+```bash
+kubectl apply -f k8s/harbor/harbor-namespace.yaml
+```
+
+### Admin password
+
 Create OpenBao secret with a random password for Harbor admin user
 ```bash
 kubectl exec -ti openbao-0 -n openbao -- bao kv put -mount=kv harbor-admin-password \
     HARBOR_ADMIN_PASSWORD=$(openssl rand -base64 32)
-```
-
-Create OpenBao secret with a random password for Harbor db user
-```bash
-kubectl exec -ti openbao-0 -n openbao -- bao kv put -mount=kv harbor-db-credentials \
-    username=harbor \
-    password=$(openssl rand -base64 32)
-```
-
-Create namespace
-```bash
-kubectl create namespace harbor
 ```
 
 Create ExternalSecret to pull the admin password
@@ -29,14 +24,15 @@ Create ExternalSecret to pull the admin password
 kubectl apply -f k8s/harbor/harbor-admin-password-external-secret.yaml
 ```
 
+### Harbor database credentials
+
+:::info
+Harbor role and OpenBao secret should have been created in the [Cluster Roles and Secrets](../100-cnpg/10_cluster_roles_and_secrets.md).
+:::
+
 Create ExternalSecret to pull the Harbor db credentials into harbor namespace
 ```bash
 kubectl apply -f k8s/harbor/harbor-db-credentials-external-secret.yaml
-```
-
-Ensure you already have External Secret to pull the Harbor db credentials into cnpg-system namespace. This should have been created with the cnpg cluster.
-```bash
-kubectl apply -f k8s/cnpg-system/databases/harbor/harbor-db-credentials-external-secret.yaml
 ```
 
 ## Install
@@ -55,14 +51,8 @@ We are using the Harbor helm chart built-in redis instance.
 :::
 
 :::info
-`harbor` role should have been created with the cnpg cluster.
+`harbor` database should have been created earlier as part of the [Databases](../100-cnpg/30_databases.md).
 :::
-
-Create `harbor` database in the PostgreSQL cluster
-
-```bash
-kubectl apply -f k8s/cnpg-system/databases/harbor/harbor-database.yaml
-```
 
 Add helm repo
 ```bash

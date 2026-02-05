@@ -17,6 +17,11 @@ WOODPECKER_FORGEJO_CLIENT=<YOUR_FORGEJO_CLIENT> \
 WOODPECKER_FORGEJO_SECRET=<YOUR_FORGEJO_CLIENT_SECRET>
 ```
 
+Create namespace for Woodpecker CI:
+```bash
+kubectl apply -f k8s/woodpecker/woodpecker-namespace.yaml
+```
+
 Add external secret for Woodpecker server environment variables:
 ```bash
 kubectl apply -f k8s/woodpecker/woodpecker-server-env-external-secret.yaml

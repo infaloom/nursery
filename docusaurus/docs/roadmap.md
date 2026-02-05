@@ -7,7 +7,8 @@
 - ~~Keycloak for user management and authentication~~
 - ~~Migrate internal services authentication to Keycloak~~
 - ~~Migrate harbor registry db to dedicated PostgreSQL role (as with forgejo and keycloak)~~
-- Refactor docs to ensure services cnpg roles and dbs are created with the cnpg cluster and not each individually
+- ~~Refactor docs to ensure services cnpg roles and dbs are created with the cnpg cluster and not each individually~~
+- Document Forgejo SSO with Keycloak
 - Look for alternatives to MinIO for remote backups (going closed source)
 - Alert rules and notifications (Prometheus, Grafana, Alertmanager)
 - Add tutorials for configuring keycloak Nursery realm

@@ -1,4 +1,4 @@
-# Rook Ceph Setup
+# Rook Ceph Cluster
 
 ## Add Rook Helm repo
 

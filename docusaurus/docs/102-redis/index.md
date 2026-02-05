@@ -15,7 +15,7 @@ redis-password=$(openssl rand -base64 32)
 
 Create namespace
 ```bash
-kubectl create namespace redis-sentinel
+kubectl apply -f k8s/redis-sentinel/redis-sentinel-namespace.yaml
 ```
 
 Apply external secret to fetch the password

@@ -1,4 +1,4 @@
-# CloudNativePG
+# Operator and Cluster
 
 Details at https://cloudnative-pg.io/.
 
@@ -48,21 +48,11 @@ export CNPG_BACKUP_S3_ENDPOINT_URL=$(kubectl get secret cnpg-backup-s3-creds -n 
 Altough we are using Rook Ceph as data store which is replicated 3 times, it is not advisible to skip remote backups. But in case you wish to do so you can set the parameter `backups.enabled: false` in `k8s/cnpg-system/cnpg-cluster-values.yaml` which will skip the whole backup configuration.
 :::
 
-## Cluster
+## Cluster setup
 
-Create superuser secret in OpenBao
-```bash
-kubectl exec -ti openbao-0 -n openbao -- bao kv put -mount=kv cnpg-superuser-secret \
-    username=postgres \
-    password=$(openssl rand -base64 32)
-```
+Superuser credentials are created in the previous step.
 
-Create external secret
-```bash
-kubectl apply -f k8s/cnpg-system/cnpg-superuser-secret-external-secret.yaml
-```
-
-Setup the cluster
+We can proceed with cluster setup as follows:
 ```bash
 envsubst < k8s/cnpg-system/cnpg-cluster-values.yaml | \
 helm upgrade --install cnpg-cluster cnpg/cluster \

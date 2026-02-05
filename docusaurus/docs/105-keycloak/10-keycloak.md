@@ -2,51 +2,13 @@
 
 Keycloak is an open-source identity and access management solution aimed at modern applications and services. It provides features such as single sign-on (SSO), user federation, identity brokering, and social login. Keycloak supports standard protocols like OAuth2, OpenID Connect, and SAML 2.0, making it a versatile choice for managing authentication and authorization in various environments.
 
-## Database Setup
-
-Create openbao secret with random password:
-```bash
-kubectl exec -ti openbao-0 -n openbao -- bao kv put -mount=kv keycloak-db-credentials \
-    username=keycloak \
-    password=$(openssl rand -base64 32)
-```
-
-Add external secret for Keycloak database credentials:
-```bash
-kubectl apply -f k8s/cnpg-system/databases/keycloak/keycloak-db-credentials-external-secret.yaml
-```
-
-Update the cluster values to include the Keycloak role:
-```yaml
-  roles:
-    - name: keycloak
-      ensure: present # <- this line ensures the role is created
-      login: true
-      superuser: false
-      passwordSecret:
-        name: keycloak-db-credentials
-```
-
-Update CNPG cluster to sync keycloak role:
-```bash
-kubectl apply -f k8s/cnpg-system/cnpg-cluster-values.yaml
-```
-
-Update CNPG cluster to sync keycloak role (ensure environment variables are set):
-```bash
-envsubst < k8s/cnpg-system/cnpg-cluster-values.yaml | \
-helm upgrade --install cnpg-cluster cnpg/cluster \
---version 0.2.1 \
---namespace cnpg-system --create-namespace \
---values -
-```
-
-Create Keycloak database:
-```bash
-kubectl apply -f k8s/cnpg-system/databases/keycloak/keycloak-database.yaml
-```
-
 ## Deploy Keycloak
+
+:::info
+Database setup is complete as part of the Cloud Native PostgreSQL deployment.
+:::
+
+You can now deploy Keycloak using the provided Kubernetes manifests.
 
 Apply Keycloak namespace:
 ```bash

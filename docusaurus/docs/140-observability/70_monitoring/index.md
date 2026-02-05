@@ -6,7 +6,7 @@ https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-promet
 
 Create namespace
 ```bash
-kubectl create namespace kube-prometheus-stack
+kubectl apply -f k8s/kube-prometheus-stack/kube-prometheus-stack-namespace.yaml
 ```
 
 ### Admin credentials
