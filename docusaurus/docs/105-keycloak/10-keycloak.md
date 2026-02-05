@@ -45,4 +45,16 @@ The default admin username is `admin` and the password is `admin`. Create a prop
 
 ## Create Realm, Clients, and Users
 
-You need to create a new realm, clients, and users as needed for your applications. The detailed config is beyond the scope of this documentation, but you can refer to the [Keycloak Documentation](https://www.keycloak.org/documentation) for guidance on how to set up realms, clients, and users according to your requirements.
+You need to create a new realm called `nursery`, users and clients as needed for your applications. The detailed config is beyond the scope of this documentation, but you can refer to the [Keycloak Documentation](https://www.keycloak.org/documentation) for guidance on how to set up realms, clients, and users according to your requirements.
+
+## Create Groups
+
+You can create groups in Keycloak to manage user permissions and access control more efficiently. You should create a the following groups at minimum:
+
+- `Forgejo Contributors` group for users who should have access to Forgejo
+- `Forgejo Admins` group for users who should have administrative privileges in Forgejo
+- `Admins` group for users who should have administrative privileges in cluster-wide applications
+
+:::warning
+Add `groups` scope to the clients that you will be using for SSO, otherwise group information will not be included in the tokens issued by Keycloak and SSO configuration will not work as expected.
+:::

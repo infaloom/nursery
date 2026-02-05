@@ -8,9 +8,9 @@
 - ~~Migrate internal services authentication to Keycloak~~
 - ~~Migrate harbor registry db to dedicated PostgreSQL role (as with forgejo and keycloak)~~
 - ~~Refactor docs to ensure services cnpg roles and dbs are created with the cnpg cluster and not each individually~~
-- Document Forgejo SSO with Keycloak
-- Look for alternatives to MinIO for remote backups (going closed source)
+- ~~Document Forgejo SSO with Keycloak~~
 - Alert rules and notifications (Prometheus, Grafana, Alertmanager)
+- Look for alternatives to MinIO for remote backups (going closed source)
 - Add tutorials for configuring keycloak Nursery realm
 - Network policies
 - Full cluster disaster recovery (restoring to a new Hetzner project)

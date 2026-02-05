@@ -32,7 +32,7 @@ kubectl exec -ti openbao-0 -n openbao -- bao write auth/oidc/config \
 Create OIDC role in OpenBao. Replace `<CLUSTER_DOMAIN>` with actual value.
 
 :::warning
-The example below allows any user in the "Nursery Admins" group in Keycloak to log in to OpenBao with admin privileges. Adjust the configuration according to your security requirements.
+The example below allows any user in the "Admins" group in Keycloak to log in to OpenBao with admin privileges. Adjust the configuration according to your security requirements.
 :::
 
 ```bash
@@ -42,7 +42,7 @@ kubectl exec -ti openbao-0 -n openbao -- bao write auth/oidc/role/admin-sso - <<
     "user_claim": "email",
     "token_policies": "admin,default",
     "oidc_scopes": "profile,email",
-    "bound_claims": { "groups": ["/Nursery Admins"] },
+    "bound_claims": { "groups": ["/Admins"] },
     "allowed_redirect_uris": "https://openbao.<CLUSTER_DOMAIN>/v1/auth/oidc/callback,https://openbao.<CLUSTER_DOMAIN>/ui/vault/auth/oidc/oidc/callback,http://localhost:8250/oidc/callback"
 }
 EOF

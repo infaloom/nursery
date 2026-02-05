@@ -37,3 +37,10 @@ envsubst < k8s/forgejo/values.yaml | \
   --namespace forgejo --create-namespace \
   --values -
 ```
+
+Sign in to Forgejo at `https://forgejo.<CLUSTER_DOMAIN>` with the default admin account `gitea_admin`.
+
+Password is available in the forgejo-admin secret in the forgejo namespace:
+```bash
+kubectl get secret forgejo-admin -n forgejo -o jsonpath="{.data.password}" | base64 --decode
+```
