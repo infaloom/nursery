@@ -3,7 +3,7 @@
 This step is optional. It shows how to enable SAML2 SSO in Ceph Dashboard using Keycloak as Identity Provider.
 
 :::warning
-You need to have [Keycloak](../105-keycloak/index.md) and [Ceph Dashboard](../80-storage/index.md) up and running before proceeding with this guide.
+You need to have [Keycloak](../105-keycloak/10-keycloak.md) and [Ceph Dashboard](../80-storage/10-rook-ceph-cluster.md) up and running before proceeding with this guide.
 :::
 
 ## Setup Ceph Dashboard SSO with Keycloak
