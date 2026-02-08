@@ -26,6 +26,8 @@ spec:
   selector:
     matchLabels:
       app: whoami-deployment
+  strategy:
+    type: Recreate
   replicas: 1
   template:
     metadata:
@@ -39,6 +41,7 @@ spec:
       containers:
         - name: traefik-whoami
           image: traefik/whoami
+          args: ["--verbose"]
           ports:
             - containerPort: 80
           resources:
@@ -51,7 +54,7 @@ spec:
         - name: busybox
           image: busybox
           command: ["/bin/sh", "-c"]
-          args: ["echo $(hostname) @ $(date) >> /source/data/data.txt && sleep 3000"] # writes to the PVC for the purpose of testing backup/restore
+          args: ["echo $(hostname) @ $(date) >> /source/data/data.txt && sleep 3600"] # writes to the PVC for the purpose of testing backup/restore then sleeps for 3600 seconds
           volumeMounts:
             - mountPath: "/source/data"
               name: busybox-logs
