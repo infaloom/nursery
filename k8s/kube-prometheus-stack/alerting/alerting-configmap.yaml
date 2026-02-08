@@ -48,7 +48,7 @@ data:
                     conditions:
                         - evaluator:
                             params:
-                                - 0.7
+                                - 0.8
                             type: gt
                           operator:
                             type: and
@@ -70,7 +70,7 @@ data:
               noDataState: NoData
               execErrState: Error
               annotations:
-                Expected usage: < 70%
+                Expected usage: <= 80%
               isPaused: false
               notification_settings:
                 receiver: grafana-default-email
