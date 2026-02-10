@@ -16,7 +16,7 @@ data:
                 addresses: ${GRAFANA_ALERTING_EMAIL_RECEIVERS}
                 singleEmail: true
               disableResolveMessage: false
-  grafana-managed-rules.yaml: |
+  grafana-managed-rules-provisioned-5m.yaml: |
     apiVersion: 1
     groups:
         - orgId: 1
@@ -74,4 +74,59 @@ data:
               isPaused: false
               notification_settings:
                 receiver: grafana-default-email
-
+            - uid: dfcmmh98smrcwe
+              title: Alertmanager Alerts
+              condition: C
+              data:
+                - refId: A
+                  relativeTimeRange:
+                    from: 600
+                    to: 0
+                  datasourceUid: prometheus
+                  model:
+                    disableTextWrap: false
+                    editorMode: builder
+                    exemplar: false
+                    expr: label_replace(ALERTS{alertname!~"Watchdog|KubeControllerManagerDown|KubeProxyDown|KubeSchedulerDown", alertstate="firing", severity!="none"}, "alertname_original", "$1", "alertname", "(.*)")
+                    format: time_series
+                    fullMetaSearch: false
+                    includeNullMetadata: false
+                    instant: true
+                    intervalMs: 1000
+                    legendFormat: ""
+                    maxDataPoints: 43200
+                    range: false
+                    refId: A
+                    useBackend: false
+                - refId: C
+                  datasourceUid: __expr__
+                  model:
+                    conditions:
+                        - evaluator:
+                            params:
+                                - 0
+                            type: gt
+                          operator:
+                            type: and
+                          query:
+                            params:
+                                - C
+                          reducer:
+                            params: []
+                            type: last
+                          type: query
+                    datasource:
+                        type: __expr__
+                        uid: __expr__
+                    expression: A
+                    intervalMs: 1000
+                    maxDataPoints: 43200
+                    refId: C
+                    type: threshold
+              noDataState: OK
+              execErrState: Error
+              annotations: {}
+              labels: {}
+              isPaused: false
+              notification_settings:
+                receiver: grafana-default-email

@@ -47,12 +47,12 @@ kubectl apply -f k8s/kube-prometheus-stack/grafana-smtp-config-external-secret.y
 
 ## Alerting
 
-Export admin email:
+Export alert receivers email. Comma separated for multiple addresses. In this case I am using the same email for alerting as for Let's Encrypt.
 ```bash
-export GRAFANA_ALERTING_EMAIL_RECEIVERS=<REPLACE_WITH_ACTUAL_EMAILS>
+export GRAFANA_ALERTING_EMAIL_RECEIVERS=$LETSENCRYPT_EMAIL
 ```
 
-Create a ConfigMap for Grafana alerting contact points
+Create a ConfigMap for Grafana alerting contact points and provisioned rules
 ```bash
 envsubst '$GRAFANA_ALERTING_EMAIL_RECEIVERS' < k8s/kube-prometheus-stack/alerting/alerting-configmap.yaml | kubectl apply -f -
 ```
