@@ -153,6 +153,15 @@ return await Deployment.RunAsync(() =>
         Proxyprotocol = true
     });
 
+    var loadBalancerServicePostgresql = new HCloud.LoadBalancerService("loadBalancerServicePostgresql", new()
+    {
+        LoadBalancerId = clusterLoadBalancer.Id,
+        Protocol = "tcp",
+        ListenPort = 5432,
+        DestinationPort = 5432,
+        Proxyprotocol = true
+    });
+
     var loadBalancerNetwork = new HCloud.LoadBalancerNetwork("loadBalancerNetwork", new()
     {
         LoadBalancerId = clusterLoadBalancer.Id.Apply(int.Parse),

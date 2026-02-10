@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-cfg-configmap
+  namespace: tcp-proxy
+data:
+  haproxy.cfg: |
+    global
+      # change info to debug to get more verbose logging
+      log stdout format raw local0 info
+
+    defaults
+      mode tcp
+      log global
+      option tcplog
+      timeout connect 5s
+      timeout client 30s
+      timeout server 30s
+
+    listen health
+      bind *:8405
+      mode http
+      monitor-uri /healthz
+      option dontlog-normal
+
+    # --------------------------------------
+    # Define your services and backends here
+
+    frontend forgejo-ssh
+      bind *:32222 accept-proxy
+      mode tcp
+
+      # Define an ACL named 'network_allowed' that matches source IPs
+      acl network_allowed src ${HQ_IP}/32 10.0.1.1/32
+
+      # Reject any connection that does NOT match the 'network_allowed' ACL
+      # We are using `tcp-request content` instead of `tcp-request connection` to ensure that the ACL is evaluated after the PROXY protocol header is processed, allowing us to check the actual source IP address of the client.
+      tcp-request content reject if !network_allowed
+
+      default_backend forgejo-ssh-backend
+
+    backend forgejo-ssh-backend
+      mode tcp
+      server forgejo forgejo-ssh.forgejo.svc.cluster.local:2222 check send-proxy
+
+    frontend postgresql
+      bind *:5432 accept-proxy
+      mode tcp
+
+      # Define an ACL named 'network_allowed' that matches source IPs
+      acl network_allowed src ${HQ_IP}/32 10.0.1.1/32
+
+      # Reject any connection that does NOT match the 'network_allowed' ACL
+      # We are using `tcp-request content` instead of `tcp-request connection` to ensure that the ACL is evaluated after the PROXY protocol header is processed, allowing us to check the actual source IP address of the client.
+      tcp-request content reject if !network_allowed
+
+      default_backend postgresql-backend
+
+    backend postgresql-backend
+      mode tcp
+      server postgresql cnpg-cluster-rw.cnpg-system.svc.cluster.local:5432 check

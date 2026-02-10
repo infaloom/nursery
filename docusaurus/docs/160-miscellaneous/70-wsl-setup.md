@@ -14,3 +14,16 @@ To create a new WSL instance with Ubuntu 24.04 named Ubuntu2, run the following 
 ```powershell
 wsl --install Ubuntu-24.04 --name Ubuntu2
 ```
+
+## Google Drive and WSL
+
+Since a recent WSL2 update Google Drive is not working by default. You can find a workaround in this SuperUser answer: https://superuser.com/questions/1781174/google-drive-in-wsl
+
+In short, create the dir (first time only) and mount the drive with the following commands in WSL:
+```bash
+sudo mkdir -p /mnt/g
+sudo mount -t drvfs G: /mnt/g
+```
+
+Then you can access your Google Drive files in WSL at `/mnt/g/`.
+

@@ -64,9 +64,8 @@ strategy:
 
 service:
   ssh:
-    type: LoadBalancer
-    port: 32222
-    externalTrafficPolicy: Local
+    type: ClusterIP
+    port: 2222
 ingress:
   enabled: true
   className: traefik
