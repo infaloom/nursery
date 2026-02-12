@@ -6,33 +6,34 @@ config:
         host                   loki-gateway.loki.svc.cluster.local
         port                   80
         match                  *
-        auto_kubernetes_labels on
-        labels                 namespace=$kubernetes['namespace_name'],pod=$kubernetes['pod_name'],container=$kubernetes['container_name'],node=$kubernetes['host']
+        labels                 host=$kubernetes['host'],namespace=$kubernetes['namespace_name'],app=$kubernetes['labels']['app'],pod_name=$kubernetes['pod_name'],container_name=$kubernetes['container_name']
         tenant_id              fluent-bit
   filters: |
     [FILTER]
-        Name kubernetes
-        Match kube.*
-        Merge_Log On
-        Keep_Log Off
-        K8S-Logging.Parser On
-        K8S-Logging.Exclude On
+        name                   kubernetes
+        match                  kube.*
+        merge_log              on
+        keep_log               off
+        k8s-logging.parser     on
+        k8s-logging.exclude    on
+        annotations            off
+        buffer_size            2MB
 
     [FILTER]
-        Name    lua
-        Match   kube.*
-        script  /fluent-bit/scripts/serilog_filter.lua
-        call    process_serilog
+        name                   lua
+        match                  kube.*
+        script                 /fluent-bit/scripts/serilog_filter.lua
+        call                   process_serilog
   customParsers: |
     [PARSER]
-        Name                   serilog-formatting-compact
-        Format                 json
-        Time_Key               @t
-        Time_Format            %Y-%m-%dT%H:%M:%S.%L%z
-        Time_Strict            true
-        Time_Keep              true # Keep the original time field for serilog filter
+        name                   serilog-formatting-compact
+        format                 json
+        time_key               @t
+        time_format            %Y-%m-%dT%H:%M:%S.%L%z
+        time_strict            true
+        time_keep              true # Keep the original time field for serilog filter
         # Optional: If the log level is present as a short string, map it
-        Types                  @l:string @m:string @x:string
+        types                  @l:string @m:string @x:string
 luaScripts:
   serilog_filter.lua: |
     -- Lua filter for serilog-formatting-compact parsed logs
