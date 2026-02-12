@@ -7,6 +7,7 @@ config:
         port                   80
         match                  *
         auto_kubernetes_labels on
+        labels                 namespace=$kubernetes['namespace_name'],pod=$kubernetes['pod_name'],container=$kubernetes['container_name'],node=$kubernetes['host']
         tenant_id              fluent-bit
   filters: |
     [FILTER]
