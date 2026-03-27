@@ -12,6 +12,7 @@
 - ~~Alert rules and notifications (Prometheus, Grafana, Alertmanager)~~
 - ~~DB services access behind a firewall (without kubectl port-forward)~~
 - ~~Forward AlertManager alerts to Grafana managed alerts~~
+- Add ansible playbook for k3s certificate renewal
 - Network policies
 - Add tutorials for configuring keycloak Nursery realm
 - Full cluster disaster recovery (restoring to a new Hetzner project)
