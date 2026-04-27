@@ -70,7 +70,7 @@ Run the following command to get the information needed to connect to the databa
 echo "---- PostgreSQL Connection Info ----"
 echo "User: postgres"
 echo "Password: $(kubectl get secret cnpg-superuser-secret -n cnpg-system -o jsonpath="{.data.password}" | base64 --decode)"
-kubectl port-forward -n cnpg-system svc/cnpg-cluster-rw 5432:5432
+kubectl port-forward -n cnpg-system svc/cnpg-cluster-pooler-rw 5432:5432
 ```
 
 ## cnpg plugin

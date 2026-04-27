@@ -80,7 +80,7 @@ database:
   # and fill the connection information in "external" section
   type: external
   external:
-    host: "cnpg-cluster-rw.cnpg-system.svc.cluster.local"
+    host: "cnpg-cluster-pooler-rw.cnpg-system.svc.cluster.local"
     coreDatabase: "harbor"
     username: "harbor"
     # if using existing secret, the key must be "password"

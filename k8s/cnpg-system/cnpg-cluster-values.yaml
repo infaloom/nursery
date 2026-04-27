@@ -65,3 +65,16 @@ cluster:
         name: harbor-db-credentials
     # START ENVIRONMENT SPECIFIC ROLES SECTION
     # END ENVIRONMENT SPECIFIC ROLES SECTION
+
+poolers:
+  - name: rw
+    instances: 3
+    type: rw
+    poolMode: session
+    parameters:
+      max_client_conn: "1000"
+      default_pool_size: "10"
+    monitoring:
+      enabled: true
+      podMonitor:
+        enabled: true

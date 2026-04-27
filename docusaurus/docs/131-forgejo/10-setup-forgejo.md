@@ -22,9 +22,9 @@ kubectl apply -f k8s/forgejo/forgejo-bucket-claim.yaml
 `forgejo` role and database should have been created with the cnpg cluster. See [Roles and Secrets](../100-cnpg/10_cluster_roles_and_secrets.md) and [Databases](../100-cnpg/30_databases.md).
 :::
 
-Add forgejo-db-credentials external secret in forgejo namespace:
+Add app.ini external secret in forgejo namespace:
 ```bash
-kubectl apply -f k8s/forgejo/forgejo-db-credentials-external-secret.yaml
+kubectl apply -f k8s/forgejo/forgejo-app-ini-external-secret.yaml
 ```
 
 ## Install Forgejo

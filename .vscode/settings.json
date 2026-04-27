@@ -1,4 +1,5 @@
 {
+    "peacock.color": "#2ecc71",
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#54d98c",
         "activityBar.background": "#54d98c",
@@ -18,5 +19,5 @@
         "titleBar.inactiveBackground": "#2ecc7199",
         "titleBar.inactiveForeground": "#15202b99"
     },
-    "peacock.color": "#2ecc71"
+    "peacock.remoteColor": "#2ecc71"
 }
