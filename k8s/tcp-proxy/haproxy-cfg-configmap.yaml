@@ -58,4 +58,4 @@ data:
 
     backend postgresql-backend
       mode tcp
-      server postgresql cnpg-cluster-pooler-rw.cnpg-system.svc.cluster.local:5432 check
+      server postgresql cnpg-cluster-rw.cnpg-system.svc.cluster.local:5432 check
