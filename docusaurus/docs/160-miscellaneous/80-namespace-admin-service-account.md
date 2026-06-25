@@ -24,10 +24,10 @@ The built-in `admin` role gives broad admin-level access to namespaced resources
 
 ## Apply the RBAC manifest
 
-Run these commands from this repository using an existing admin kubeconfig.
+Run these commands from this repository using an existing admin kubeconfig. If your admin kubeconfig is already at `~/.kube/config`, you can skip the `KUBECONFIG` export.
 
 ```bash
-export KUBECONFIG=~/.kube/config-pulumi-hetzner-k3s
+export KUBECONFIG=/path/to/admin-kubeconfig
 kubectl apply -f k8s/namespace-admin/namespace-admin-rbac.yaml
 ```
 
